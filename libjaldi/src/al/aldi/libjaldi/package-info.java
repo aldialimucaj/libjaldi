@@ -1,7 +1,7 @@
 /**
  * General use Java classes.
  *  
- * @author Aldi Alimuçaj
+ * @author Aldi Alimucaj
  * 
  */
 package al.aldi.libjaldi;
