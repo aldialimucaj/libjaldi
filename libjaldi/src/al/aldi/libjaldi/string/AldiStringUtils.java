@@ -74,4 +74,14 @@ public class AldiStringUtils {
     public static boolean startsWithHttpS(String string) {
         return string.startsWith("http://") || string.startsWith("https://");
     }
+
+    public static boolean isNullOrEmpty(String str) {
+        boolean result = false;
+        if(null == str) {
+            return true;
+        } else if(str.equals("")) {
+            return true;
+        }
+        return result;
+    }
 }
