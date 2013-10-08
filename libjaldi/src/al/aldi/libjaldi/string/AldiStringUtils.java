@@ -75,13 +75,16 @@ public class AldiStringUtils {
         return string.startsWith("http://") || string.startsWith("https://");
     }
 
+    /**
+     * Tests whether the object is null or empty.
+     *
+     * @param str String object to be tested if null or empty
+     * @return true if null or empty
+     */
     public static boolean isNullOrEmpty(String str) {
-        boolean result = false;
-        if(null == str) {
-            return true;
-        } else if(str.equals("")) {
-            return true;
+        if(null != str) {
+            return str.equals("");
         }
-        return result;
+        return true;
     }
 }

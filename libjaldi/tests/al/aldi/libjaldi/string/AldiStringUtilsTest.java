@@ -1,14 +1,12 @@
 package al.aldi.libjaldi.string;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
 import org.junit.Test;
+
+import static org.junit.Assert.*;
 
 public class AldiStringUtilsTest {
 
-    String[] strArray                          = new String[] { "a", "b", "c" };
+    String[] strArray                          = new String[]{"a", "b", "c"};
     String   strArrayJoined                    = "abc";
     String   strArrayJoinedWithSpaces          = "a b c";
     String   strArrayJoinedWithSpacesAndDollar = "$a $b $c";
@@ -17,15 +15,22 @@ public class AldiStringUtilsTest {
 
     /* *************************************************************************** */
 
-    String   linkWithHttp                      = "http://asdfa.com";
-    String   linkWithHttp2                     = "http://";
-    String   linkWithoutHttp                   = "ahttp://";
-    String   linkWithoutHttp2                  = "http:/";
+    String linkWithHttp     = "http://asdfa.com";
+    String linkWithHttp2    = "http://";
+    String linkWithoutHttp  = "ahttp://";
+    String linkWithoutHttp2 = "http:/";
 
-    String   linkWithHttps                     = "https://asdfa.com";
-    String   linkWithHttps2                    = "https://";
-    String   linkWithoutHttps                  = "ahttp://";
-    String   linkWithoutHttps2                 = "http:/";
+    String linkWithHttps     = "https://asdfa.com";
+    String linkWithHttps2    = "https://";
+    String linkWithoutHttps  = "ahttp://";
+    String linkWithoutHttps2 = "http:/";
+
+    /* *************************************************************************** */
+
+    String nullStr   = null;
+    String emptyStr  = "";
+    String emptyStr2 = new String();
+
 
     @Test
     public void testArrayToStringStringArray() {
@@ -53,6 +58,17 @@ public class AldiStringUtilsTest {
         assertTrue(AldiStringUtils.startsWithHttpS(linkWithHttps2));
         assertFalse(AldiStringUtils.startsWithHttpS(linkWithoutHttps));
         assertFalse(AldiStringUtils.startsWithHttpS(linkWithoutHttps2));
+    }
+
+    @Test
+    public void testIsNullOrEmty() {
+        assertTrue(AldiStringUtils.isNullOrEmpty(nullStr));
+        assertTrue(AldiStringUtils.isNullOrEmpty(emptyStr));
+        assertTrue(AldiStringUtils.isNullOrEmpty(emptyStr2));
+
+        assertFalse(AldiStringUtils.isNullOrEmpty(prefix));
+        assertFalse(AldiStringUtils.isNullOrEmpty(separator));
+        assertFalse(AldiStringUtils.isNullOrEmpty(linkWithHttps));
     }
 
 }
