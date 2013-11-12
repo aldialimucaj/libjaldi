@@ -71,4 +71,15 @@ public class AldiStringUtilsTest {
         assertFalse(AldiStringUtils.isNullOrEmpty(linkWithHttps));
     }
 
+    @Test
+    public void testRoundedBrackets() {
+        assertEquals(AldiStringUtils.addRoundBrackets(strArrayJoined), "("+strArrayJoined+")");
+        assertEquals(AldiStringUtils.addRoundBrackets(strArrayJoinedWithSpaces), "("+strArrayJoinedWithSpaces+")");
+        assertEquals(AldiStringUtils.addRoundBrackets(strArrayJoinedWithSpacesAndDollar), "("+strArrayJoinedWithSpacesAndDollar+")");
+
+        assertNotSame(AldiStringUtils.addRoundBrackets(strArrayJoined), ""+strArrayJoined+")");
+        assertNotSame(AldiStringUtils.addRoundBrackets(strArrayJoinedWithSpaces), "("+strArrayJoinedWithSpaces+"");
+        assertNotSame(AldiStringUtils.addRoundBrackets(strArrayJoinedWithSpacesAndDollar), "(("+strArrayJoinedWithSpacesAndDollar+")");
+    }
+
 }

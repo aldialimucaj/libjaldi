@@ -87,4 +87,24 @@ public class AldiStringUtils {
         }
         return true;
     }
+
+    /**
+     * Adding rounded brackets to string and returning it
+     * @code AldiStringUtils.addRoundBrackets("name"); // => (name)
+     * @param str String to be put between brackets
+     * @return concatenated string with brackets
+     */
+    public static String addRoundBrackets(String str) {
+        return "(" + str + ")";
+    }
+
+    /**
+     * Adding rounded brackets to string and returning it
+     * @code AldiStringUtils.addSquareBrackets("name"); // => [name]
+     * @param str String to be put between brackets
+     * @return concatenated string with brackets
+     */
+    public static String addSquareBrackets(String str) {
+        return "[" + str + "]";
+    }
 }
