@@ -112,6 +112,27 @@ public class AldiStringUtils {
         return "[" + str + "]";
     }
 
+    /**
+     * Trails the message if it exeeds the length given in length and add 3 dots
+     * without passing the length limit
+     *
+     * @param str String to read from
+     * @param length length not to be exeeded
+     */
+    public static String trailWithThreeDots(final String str, int length) {
+        String suffix = "...";
+        if(length <= 0) {
+            throw new IllegalArgumentException("Length to trail cannot bo negative or zero!");
+        }
+        if (str.length() <= length || suffix.length() >= length ) {
+            return str;
+        } else if (str.length() + suffix.length() <= length) {
+            return str;
+        }
+
+        return str.substring(0, length - suffix.length()) + suffix;
+    }
+
     /* ********************************************************************** */
 
     public static String random(int length) {
@@ -120,8 +141,8 @@ public class AldiStringUtils {
 
     static class RandomString {
 
-        private final char[] symbols = new char[36];
-        private final Random random = new Random();
+        private final char[] symbols = new char[62];
+        private final Random random  = new Random();
         private final char[] buf;
 
         public RandomString(int length) {
@@ -129,6 +150,8 @@ public class AldiStringUtils {
                 symbols[idx] = (char) ('0' + idx);
             for (int idx = 10; idx < 36; ++idx)
                 symbols[idx] = (char) ('a' + idx - 10);
+            for (int idx = 36; idx < 62; ++idx)
+                symbols[idx] = (char) ('A' + idx - 36);
 
             if (length < 1)
                 throw new IllegalArgumentException("str length < 1: " + length);

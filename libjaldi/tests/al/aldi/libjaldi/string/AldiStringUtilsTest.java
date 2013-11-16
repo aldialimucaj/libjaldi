@@ -82,4 +82,60 @@ public class AldiStringUtilsTest {
         assertNotSame(AldiStringUtils.addRoundBrackets(strArrayJoinedWithSpacesAndDollar), "(("+strArrayJoinedWithSpacesAndDollar+")");
     }
 
+    @Test
+    public void testTrailWithThreeDots() throws Exception {
+        int lenght = 10;
+        String retValue = AldiStringUtils.trailWithThreeDots(linkWithHttp, lenght);
+        assertEquals(retValue,"http://...");
+        assertEquals(retValue.length(), lenght);
+
+        lenght = 15;
+        retValue = AldiStringUtils.trailWithThreeDots(linkWithHttp, lenght);
+        assertEquals(retValue,"http://asdfa...");
+        assertEquals(retValue.length(), lenght);
+
+        lenght = 4;
+        retValue = AldiStringUtils.trailWithThreeDots("abcefefasefssfeas", lenght);
+        assertEquals(retValue,"a...");
+        assertEquals(retValue.length(), lenght);
+
+        lenght = 2;
+        retValue = AldiStringUtils.trailWithThreeDots("abc", lenght);
+        assertEquals(retValue,"abc");
+
+        lenght = 5;
+        retValue = AldiStringUtils.trailWithThreeDots("abcde", lenght);
+        assertEquals(retValue,"abcde");
+
+        lenght = -1;
+        boolean gotToCatch = false;
+        try {
+            AldiStringUtils.trailWithThreeDots("abcefsfeas", lenght);
+        } catch (Exception e) {
+            gotToCatch = true;
+        } finally {
+            assertTrue(gotToCatch);
+        }
+
+
+        lenght = -1;
+        gotToCatch = false;
+        try {
+            AldiStringUtils.trailWithThreeDots("", lenght);
+        } catch (Exception e) {
+            gotToCatch = true;
+        } finally {
+            assertTrue(gotToCatch);
+        }
+
+        lenght = 0;
+        gotToCatch = false;
+        try {
+            AldiStringUtils.trailWithThreeDots("", lenght);
+        } catch (Exception e) {
+            gotToCatch = true;
+        } finally {
+            assertTrue(gotToCatch);
+        }
+    }
 }
