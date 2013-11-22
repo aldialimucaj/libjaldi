@@ -18,7 +18,9 @@ import java.util.concurrent.*;
  */
 public class NetUtils {
     public static final int IS_UP_TIMEOUT = 1000;
-    public static final int THREAD_NUMBER = 100;
+    public static final int THREAD_NUMBER = 256;
+
+    public static final String IPADDRESS_PATTERN = "(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)";
 
     /**
      * Checks if remote server is listening to port.
@@ -41,12 +43,15 @@ public class NetUtils {
     /**
      * Asynchronous method for checking if port is open if a set of servers.
      *
-     * @param ip ip to start checking
+     * @param ip      ip version 4 to start checking
      * @param netMask mask cann be /24 or /16 the more doesn' t make sense
-     * @param port port to connect
+     * @param port    port to connect
      * @return map of servers which were listening to the port
      */
-    public static HashMap<String, Integer> getListeningServers(String ip, IpRange netMask, int port) {
+    public static HashMap<String, Integer> getListeningServers(String ip, IpRange netMask, int port) throws IllegalArgumentException {
+        if (!ip.matches(IPADDRESS_PATTERN)) {
+            throw new IllegalArgumentException(ip + " - doesnt look like an IPv4 to me!");
+        }
         HashMap<String, Integer> map = new HashMap<>();
         String ipStub = ip;
         int range = 0;
