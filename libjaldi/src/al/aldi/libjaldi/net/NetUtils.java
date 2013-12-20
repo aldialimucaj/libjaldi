@@ -1,6 +1,8 @@
 package al.aldi.libjaldi.net;
 
 import java.io.IOException;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -97,6 +99,106 @@ public class NetUtils {
 
 
         return map;
+    }
+
+    /**
+     * Sends a Magic Packet which would be turning the host on if properly configured.
+     *
+     * @param mac
+     * @throws IOException
+     * @throws IllegalArgumentException
+     */
+    public static void wol(String mac) throws IOException, IllegalArgumentException {
+        final String HEX = "0123456789ABCDEF";
+        byte bMAC[] = new byte[6];
+        int m = 0; // string index
+        int i = 0; // mac byte array index
+        int h = 0; // last (high) hex digit
+        mac = mac.toUpperCase();
+        while (m < mac.length() && i < 2 * 6) {
+            int n = HEX.indexOf(mac.charAt(m));
+            if (n >= 0) {
+                if (i % 2 == 0) {
+                    h = n;
+                } else {
+                    bMAC[i / 2] = (byte) (h * 16 + n);
+                }
+                i++;
+            }
+            m++;
+        }
+        if (m < mac.length()) {
+            throw new IllegalArgumentException(
+                    "mac Address must be 12 Hex digits exactly");
+        }
+
+        wol(bMAC);
+    }
+
+    /**
+     * Wake on LAN with byte MAC
+     * @param MAC
+     * @throws IOException
+     */
+    public static void wol(byte[] MAC) throws IOException {
+        if (MAC == null || MAC.length != 6) {
+            throw new IllegalArgumentException(
+                    "MAC array must be present and 6 bytes long");
+        }
+
+        // Assemble Magic Packet
+        int packetLength = 102;
+        byte packetData[] = new byte[packetLength];
+        int m = 0;
+
+        // Start off with six 0xFF values
+        packetData[m++] = (byte) 255;
+        packetData[m++] = (byte) 255;
+        packetData[m++] = (byte) 255;
+        packetData[m++] = (byte) 255;
+        packetData[m++] = (byte) 255;
+        packetData[m++] = (byte) 255;
+
+        // Append sixteen copies of MAC address
+        for (int i = 0; i < 16 * 6; i++) {
+            packetData[m] = MAC[m % 6];
+            m++;
+        }
+
+        DatagramSocket socket = new DatagramSocket(2304);
+        try {
+            InetSocketAddress address = new InetSocketAddress("255.255.255.255", 2304);
+            DatagramPacket datagram = new DatagramPacket(packetData, packetLength, address);
+            socket.setBroadcast(true);
+            socket.send(datagram);
+        } finally {
+            if (socket != null) {
+                socket.close();
+            }
+        }
+    }
+
+    /**
+     * Converts string to byte array.
+     *
+     * @param macStr mac in string form which can be separated by :, - or | for example 00:1D:7D:D0:EF:2C
+     * @return byte array of mac address
+     * @throws IllegalArgumentException
+     */
+    public static byte[] getMacBytes(String macStr) throws IllegalArgumentException {
+        byte[] bytes = new byte[6];
+        String[] hex = macStr.split("(\\:|\\-)");
+        if (hex.length != 6) {
+            throw new IllegalArgumentException("Invalid MAC address.");
+        }
+        try {
+            for (int i = 0; i < 6; i++) {
+                bytes[i] = (byte) Integer.parseInt(hex[i], 16);
+            }
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException("Invalid hex digit in MAC address.");
+        }
+        return bytes;
     }
 
     public enum IpRange {

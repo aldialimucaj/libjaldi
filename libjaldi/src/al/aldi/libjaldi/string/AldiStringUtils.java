@@ -113,6 +113,17 @@ public class AldiStringUtils {
     }
 
     /**
+     * Adding curly brackets to string and returning it
+     *
+     * @param str String to be put between brackets
+     * @return concatenated string with brackets
+     * @code AldiStringUtils.addCurlyBrackets("name"); // => {name}
+     */
+    public static String addCurlyBrackets(String str) {
+        return "{" + str + "}";
+    }
+
+    /**
      * Trails the message if it exeeds the length given in length and add 3 dots
      * without passing the length limit
      *
